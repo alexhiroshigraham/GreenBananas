@@ -2,7 +2,7 @@
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
 
 #defining Github URLs
-$downloaderURL = "https://github.com/alexhiroshigraham/PowershellCI-CD/raw/main/Downloader.ps1"
+$downloaderURL = "https://github.com/alexhiroshigraham/GreenBananas/raw/main/Downloader.ps1"
 
 
 #defining file path
