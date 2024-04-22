@@ -1,5 +1,5 @@
 #defining file path
-$filePath = "C:\_Relion\Scripts\"
+$filePath = "C:\GreenBananas\"
 
 #defining Storage Pool Script URL
 $storagePool = "https://github.com/alexhiroshigraham/GreenBananas/raw/main/StoragePool.ps1"
