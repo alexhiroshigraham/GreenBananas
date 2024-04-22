@@ -2,15 +2,15 @@
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
 
 #defining Github URLs
-$downloaderURL = "https://github.com/alexhiroshigraham/GreenBananas/raw/main/Downloader.ps1"
+$downloaderURL = "https://github.com/alexhiroshigraham/PowershellCI-CD/raw/main/Downloader.ps1"
 
 
 #defining file path
-$filePath = "C:\_Relion\Scripts\"
-$downloaderPath = "C:\_Relion\Scripts\Downloader.ps1"
+$filePath = "C:\GreenBananas\"
+$downloaderPath = "C:\GreenBananas\Downloader.ps1"
 
 #retreiving info from supabase.json
-$jsonFilePath = "C:\_Relion\Scripts\supabase.json"
+$jsonFilePath = "C:\GreenBananas\supabase.json"
 $jsonContent = Get-Content -Raw -Path $jsonFilePath
 $jsonObject = ConvertFrom-Json $jsonContent
 
