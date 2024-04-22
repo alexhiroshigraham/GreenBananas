@@ -16,7 +16,7 @@ $clientJWT = $jsonObject.clientJWT
 $deviceName = $($env:COMPUTERNAME)
 
 #defining table name
-$tableName = "StoragePool"
+$tableName = "Hyper-V"
 
 #defining primary key
 $primaryKey = "?ServerName=eq." + $deviceName
