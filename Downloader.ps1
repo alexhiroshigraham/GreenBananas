@@ -2,10 +2,10 @@
 $filePath = "C:\_Relion\Scripts\"
 
 #defining Storage Pool Script URL
-$storagePool = "https://github.com/alexhiroshigraham/PowershellCI-CD/raw/main/StoragePool.ps1"
+$storagePool = "https://github.com/alexhiroshigraham/GreenBananas/raw/main/StoragePool.ps1"
 
 #defining Hyper-V Replication Health Script URL
-$hyperV = "https://github.com/alexhiroshigraham/PowershellCI-CD/raw/main/HyperV.ps1"
+$hyperV = "https://github.com/alexhiroshigraham/GreenBananas/raw/main/HyperV.ps1"
 
 #downloading Storage Pool Script from Github
 Invoke-WebRequest -Uri $storagePool -OutFile "$filePath\StoragePool.ps1"
