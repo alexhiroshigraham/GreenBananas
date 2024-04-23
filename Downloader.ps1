@@ -1,3 +1,6 @@
+#force TLS 1.2
+[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
+
 #defining file path
 $filePath = "C:\GreenBananas\"
 
