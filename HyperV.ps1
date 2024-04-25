@@ -8,14 +8,11 @@ $jsonObject = ConvertFrom-Json $jsonContent
 
 #defining variables for each object in json file
 $anonKey = $jsonObject.anonKey
-$clientName = $jsonObject.clientName
 $url = $jsonObject.url
 $clientJWT = $jsonObject.clientJWT
 
-
-
 #defining device name
-$deviceName = $($env:COMPUTERNAME)
+$deviceName = [System.Net.Dns]::GetHostByName($env:computerName).HostName
 
 #Get current date/time
 $date = Get-Date -Format "MM/dd/yyyy HH:mm:ss"
