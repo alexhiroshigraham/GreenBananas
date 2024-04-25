@@ -8,7 +8,6 @@ $jsonObject = ConvertFrom-Json $jsonContent
 
 #defining variables for each object in json file
 $anonKey = $jsonObject.anonKey
-$clientName = $jsonObject.clientName
 $url = $jsonObject.url
 $clientJWT = $jsonObject.clientJWT
 
