@@ -13,7 +13,7 @@ $url = $jsonObject.url
 $clientJWT = $jsonObject.clientJWT
 
 #defining device name
-$deviceName = $($env:COMPUTERNAME)
+$deviceName = [System.Net.Dns]::GetHostByName($env:computerName).HostName
 
 #defining table name
 $tableName = "Hyper-V"
