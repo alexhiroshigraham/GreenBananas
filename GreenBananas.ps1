@@ -1,44 +1,50 @@
 #force TLS 1.2
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
 
-#defining Github URLs
-$downloaderURL = "https://github.com/alexhiroshigraham/GreenBananas/raw/main/Downloader.ps1"
-
-
-#defining file path
-$filePath = "C:\GreenBananas\"
-$downloaderPath = "C:\GreenBananas\Downloader.ps1"
-
-#retreiving info from supabase.json
+#retreiving info from json file created by setup script
 $jsonFilePath = "C:\GreenBananas\supabase.json"
 $jsonContent = Get-Content -Raw -Path $jsonFilePath
 $jsonObject = ConvertFrom-Json $jsonContent
 
-$serversURL = $jsonObject.serversURL
+#defining variables for each object in json file
+$anonKey = $jsonObject.anonKey
+$clientName = $jsonObject.clientName
+$url = $jsonObject.url
+$clientJWT = $jsonObject.clientJWT
 
-#download servers.json from supabase
-Invoke-WebRequest -Uri $serversURL -OutFile "$filePath\servers.json" 
 
-#load json file into variables
-$serverJSONPath = $filePath + "\servers.json"
-$serversContent = Get-Content -Raw -Path $serverJSONPath
-$serversObject = ConvertFrom-Json $serversContent
-
-#download the scripts downloader from Github
-Invoke-WebRequest -Uri $downloaderURL -OutFile $downloaderPath
-
-#run the downloader script
-Start-Process powershell -ArgumentList "-ExecutionPolicy Bypass -File $downloaderPath" -Wait
 
 #defining device name
-$deviceName = $($env:COMPUTERNAME)
+$deviceName = [System.Net.Dns]::GetHostByName($env:computerName).HostName
 
-#read the servers json and if the device name matches $_.Name, run the scripts in the array.
-$serversObject | ForEach-Object {
-    if ($deviceName -eq $_.Name){
-        $_.Scripts | ForEach-Object {
-            $fullPath = Join-Path $filePath $_
-            Start-Process powershell -ArgumentList "-ExecutionPolicy Bypass -File $fullPath" -Wait
-        }
-    }
+#Get current date/time
+$date = Get-Date -Format "MM/dd/yyyy HH:mm:ss"
+
+#defining Supabase table name
+$tableName = "Hyper-V"
+
+#defining primary key
+$primaryKey = "?ServerName=eq." + $deviceName
+
+#preparing uri
+$uri = $url + "/" + $tableName + $primaryKey
+
+#prepare headers
+$headers = @{
+    "Content-Type" = "application/json"
+    "apikey" = $anonKey  
+    "Authorization" = "Bearer " + $clientJWT
+}
+
+#prepare json body
+$body = @{
+    "Hyper-V" = $date
+} | ConvertTo-Json
+
+#defining variable for replication health
+$repHealth = (Get-VMReplication).Health
+
+#check if replication health = healthy and send current date to supabase
+if ($rephealth -contains 'Normal' -and $rephealth -notcontains 'Warning' -and $rephealth -notcontains 'Critical'){
+    Invoke-RestMethod -Uri $uri -Method Patch -Headers $headers -Body $body
 }
