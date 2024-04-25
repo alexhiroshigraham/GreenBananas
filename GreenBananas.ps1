@@ -31,7 +31,7 @@ Invoke-WebRequest -Uri $downloaderURL -OutFile $downloaderPath
 Start-Process powershell -ArgumentList "-ExecutionPolicy Bypass -File $downloaderPath" -Wait
 
 #defining device name
-$deviceName = $($env:COMPUTERNAME)
+$deviceName = [System.Net.Dns]::GetHostByName($env:computerName).HostName
 
 #read the servers json and if the device name matches $_.Name, run the scripts in the array.
 $serversObject | ForEach-Object {
