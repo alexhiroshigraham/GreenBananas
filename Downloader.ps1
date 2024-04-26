@@ -14,7 +14,7 @@ $hyperV = "https://github.com/alexhiroshigraham/GreenBananas/raw/main/HyperV.ps1
 $diskSpace = "https://github.com/alexhiroshigraham/GreenBananas/raw/main/DiskSpace.ps1"
 
 #defining Anti-Virus Script URL
-$antiVirus - "https://github.com/alexhiroshigraham/GreenBananas/raw/main/Antivirus.ps1"
+$antiVirus = "https://github.com/alexhiroshigraham/GreenBananas/raw/main/Antivirus.ps1"
 
 #defining Patches Script URL
 $patches = "https://github.com/alexhiroshigraham/GreenBananas/raw/main/Patches.ps1"
