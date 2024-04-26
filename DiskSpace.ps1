@@ -27,7 +27,7 @@ foreach ($drive in $drives){
 
 #retrieving info from supabase json file
 $jsonFilePath = "C:\GreenBananas\supabase.json"
-$jsonContent = Get-Content -Path $jsonFilePath
+$jsonContent = Get-Content -Raw -Path $jsonFilePath
 $jsonObject = ConvertFrom-Json $jsonContent
 
 #defining variables for each object in json file
@@ -47,7 +47,7 @@ $tableName = "Disk Space"
 $primaryKey = "?ServerName=eq." + $deviceName
 
 #preparing uri
-$uri = $url + $tableName + $primaryKey
+$uri = $url + "/" + $tableName + $primaryKey
 
 #prepare headers
 $headers = @{
