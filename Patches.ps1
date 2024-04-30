@@ -1,60 +1,74 @@
-#force TLS 1.2
+# Force TLS 1.2
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
 
-#query the device for missing updates (excludeing drivers with Type='Software')
+# Query the device for missing updates (excluding drivers and updates where category isn't definition)
 $Session = New-Object -ComObject Microsoft.Update.Session
 $Searcher = $Session.CreateUpdateSearcher()
 $SearchResult = $Searcher.Search("IsInstalled=0 and Type='Software'")
-$Updates = $SearchResult.Updates
+$Updates = $SearchResult.Updates | Where-Object { $_.Categories | ForEach-Object { $_.Name -notlike "*Definition*" } }
 
-# defining variables to store number of missing updates and names of missing updates
+# Defining variables to store number of missing updates and names of missing updates
 $updateCount = 0
 $updateNames = @()
 
-#loop through all the updates and store missing update count and names 
+# Loop through all the updates and store missing update count and names 
 foreach ($Update in $Updates) {
     $updateCount++
     $updateNames += $Update.Title
 }
 
-#defining device name
+# Create an instance of AutomaticUpdates
+$AutoUpdate = New-Object -ComObject "Microsoft.Update.AutoUpdate"
+
+# Get the settings
+$Settings = $AutoUpdate.Settings
+
+# Check if automatic updates are enabled
+if ($Settings.NotificationLevel -eq 4) {
+    $automaticUpdates = $true
+} else {
+    $automaticUpdates = $false
+}
+
+# Defining device name
 $deviceName = [System.Net.Dns]::GetHostByName($env:computerName).HostName
 
-#Get the date/time
+# Get the date/time
 $date = Get-Date -Format "MM/dd/yyyy HH:mm:ss"
 
-#retreiving info from json file created by setup script
+# Retrieving info from JSON file created by setup script
 $jsonFilePath = "C:\GreenBananas\supabase.json"
 $jsonContent = Get-Content -Raw -Path $jsonFilePath
 $jsonObject = ConvertFrom-Json $jsonContent
 
-#defining variables for each object in json file
+# Defining variables for each object in JSON file
 $anonKey = $jsonObject.anonKey
 $url = $jsonObject.url
 $clientJWT = $jsonObject.clientJWT
 
-#defining table name
+# Defining table name
 $tableName = "Patches"
 
-#defining primary key
+# Defining primary key
 $primaryKey = "?ServerName=eq." + $deviceName
 
-#preparing uri
+# Preparing URI
 $uri = $url + "/" + $tableName + $primaryKey
 
-#prepare headers
+# Prepare headers
 $headers = @{
     "Content-Type" = "application/json"
     "apikey" = $anonKey  
     "Authorization" = "Bearer " + $clientJWT
 }
 
-#prepare json body
+# Prepare JSON body
 $body = @{
     "Date" = $date
     "UpdateCount" = $updateCount
     "Updates" = $updateNames
+    "AutoUpdate" = $automaticUpdates
 } | ConvertTo-Json
 
-#send missing update count and names to supabase with timestamp
+# Send missing update count and names to Supabase with timestamp
 Invoke-RestMethod -Uri $uri -Method Patch -Headers $headers -Body $body
