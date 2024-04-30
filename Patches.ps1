@@ -5,7 +5,7 @@
 $Session = New-Object -ComObject Microsoft.Update.Session
 $Searcher = $Session.CreateUpdateSearcher()
 $SearchResult = $Searcher.Search("IsInstalled=0 and Type='Software'")
-$Updates = $SearchResult.Updates | Where-Object { $_.Categories | ForEach-Object { $_.Name -notlike "*Definition*" } }
+$Updates = $SearchResult.Updates | Where-Object { $_.Categories | ForEach-Object { $_.Name -notlike "*Security Intelligence Update*" } }
 
 # Defining variables to store number of missing updates and names of missing updates
 $updateCount = 0
