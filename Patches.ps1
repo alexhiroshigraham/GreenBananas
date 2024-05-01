@@ -1,11 +1,11 @@
 # Force TLS 1.2
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
 
-# Query the device for missing updates (excluding drivers and updates where category isn't definition)
+# Query the device for missing updates (excluding drivers and updates with titles containing "Security Intelligence Update")
 $Session = New-Object -ComObject Microsoft.Update.Session
 $Searcher = $Session.CreateUpdateSearcher()
 $SearchResult = $Searcher.Search("IsInstalled=0 and Type='Software'")
-$Updates = $SearchResult.Updates | Where-Object { $_.Categories | ForEach-Object { $_.Name -notlike "*Security Intelligence Update*" } }
+$Updates = $SearchResult.Updates | Where-Object { $_.Title -notlike "*Security Intelligence Update*" }
 
 # Defining variables to store number of missing updates and names of missing updates
 $updateCount = 0
