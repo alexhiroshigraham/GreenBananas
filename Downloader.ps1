@@ -19,6 +19,9 @@ $antiVirus = "https://github.com/alexhiroshigraham/GreenBananas/raw/main/Antivir
 #defining Patches Script URL
 $patches = "https://github.com/alexhiroshigraham/GreenBananas/raw/main/Patches.ps1"
 
+#defining Disk Space Low Threshold Script URL
+$diskSpaceLowThresh = "https://github.com/alexhiroshigraham/GreenBananas/raw/main/DiskSpace_LowThresh.ps1"
+
 #downloading Storage Pool Script from Github
 Invoke-WebRequest -Uri $storagePool -OutFile "$filePath\StoragePool.ps1"
 
@@ -33,3 +36,6 @@ Invoke-WebRequest -Uri $antiVirus -OutFile "$filePath\AntiVirus.ps1"
 
 #downloading Patches Script from Github
 Invoke-WebRequest -Uri $patches -OutFile "$filePath\Patches.ps1"
+
+#downloading Disk Space Low Threshold Script from Github
+Invoke-WebRequest -Uri $diskSpaceLowThresh -OutFile "$filePath\DiskSpace_LowThresh.ps1"
