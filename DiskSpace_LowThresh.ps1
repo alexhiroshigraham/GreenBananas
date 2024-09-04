@@ -27,12 +27,12 @@ foreach ($drive in $drives){
 
 #retrieving info from supabase json file
 $jsonFilePath = "C:\GreenBananas\supabase.json"
-$jsonContent = Get-Content -Path $jsonFilePath
+$jsonContent = Get-Content -Path $jsonFilePath -Raw
 $jsonObject = ConvertFrom-Json $jsonContent
 
 #defining variables for each object in json file
 $anonKey = $jsonObject.anonKey
-$url = $jsonObject.url
+$url = $jsonObject.url + "/"
 $clientJWT = $jsonObject.clientJWT
 
 #defining variables for each object in json file
